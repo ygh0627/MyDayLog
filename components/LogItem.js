@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {format, formatDistanceToNow} from 'date-fns';
 import {ko} from 'date-fns/locale';
 import React from 'react';
@@ -23,13 +24,21 @@ function LogItem({log}) {
     if (replaced.length <= 100) return replaced;
     else return replaced.slice(0, 100) + '...';
   };
+
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate('Write', {log});
+  };
+
   return (
     <Pressable
       style={({pressed}) => [
         styles.block,
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
-      android_ripple={{color: '#ededed'}}>
+      android_ripple={{color: '#ededed'}}
+      onPress={onPress}>
       <Text style={styles.date}>{formatDate(log.date)}</Text>
       <Text style={styles.title}>{log.title}</Text>
       <Text style={styles.body}>{truncate(log.body)}</Text>
